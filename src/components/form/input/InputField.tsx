@@ -6,12 +6,12 @@ export interface InputProps
   error?: string;
 }
 
-const InputField = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className, ...props }, ref) => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ label, error, className = "", ...props }, ref) => {
     return (
       <div className="w-full space-y-1">
         {label && (
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {label}
           </label>
         )}
@@ -19,14 +19,18 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           {...props}
-          className={`w-full rounded-lg border px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 ${className}`}
+          className={`h-11 w-full rounded-lg border px-4 py-2.5 text-sm shadow-theme-xs 
+          placeholder:text-gray-400 focus:outline-none focus:ring-3
+          disabled:cursor-not-allowed disabled:opacity-60
+          dark:bg-gray-900 dark:text-white/90 dark:border-gray-700
+          ${className}`}
         />
 
-        {error && <p className="text-xs text-red-500">{error}</p>}
+        {error && <p className="text-xs text-error-500">{error}</p>}
       </div>
     );
   }
 );
 
-InputField.displayName = "InputField";
-export default InputField;
+Input.displayName = "Input";
+export default Input;

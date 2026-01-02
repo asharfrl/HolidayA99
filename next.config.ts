@@ -1,15 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Matikan pemeriksaan Type dan Lint saat build produksi untuk mencegah build gagal karena warning kecil
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // We keep this to prevent TypeScript errors from failing the build
   typescript: {
     ignoreBuildErrors: true,
   },
   
-  // Konfigurasi webpack untuk SVG tetap dipertahankan
+  // 'eslint' key is removed as it's no longer supported in next.config.ts for this version.
+  // If you need to skip linting, you might need to adjust your build command or eslint config separately.
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -17,8 +16,6 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
-  
-  // Hapus blok 'experimental' yang berisi 'turbo' karena menyebabkan error di versi ini
 };
 
 export default nextConfig;

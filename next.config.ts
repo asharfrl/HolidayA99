@@ -6,8 +6,17 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   
-  // 'eslint' key is removed as it's no longer supported in next.config.ts for this version.
-  // If you need to skip linting, you might need to adjust your build command or eslint config separately.
+  // Explicitly set an empty turbopack config to silence the error as per the log suggestion
+  experimental: {
+     turbo: {
+        rules: {
+           '*.svg': {
+              loaders: ['@svgr/webpack'],
+              as: '*.js',
+           },
+        }
+     }
+  },
 
   webpack(config) {
     config.module.rules.push({

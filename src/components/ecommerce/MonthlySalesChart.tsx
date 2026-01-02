@@ -4,9 +4,7 @@ import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 
 // PENTING: Fix yang sama untuk Monthly Sales Chart
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
-  ssr: false,
-});
+const ReactApexChart = dynamic(() => import("react-apexcharts").then((mod) => mod.default), { ssr: false });
 
 const MonthlySalesChart: React.FC = () => {
   const series = [

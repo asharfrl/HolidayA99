@@ -5,9 +5,7 @@ import { ApexOptions } from "apexcharts";
 
 // PENTING: Gunakan dynamic import dengan ssr: false
 // Ini mencegah kode dieksekusi di server saat build
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
-  ssr: false,
-});
+const ReactApexChart = dynamic(() => import("react-apexcharts").then((mod) => mod.default), { ssr: false });
 
 const BarChartOne: React.FC = () => {
   const series = [

@@ -3,8 +3,8 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 
-// PENTING: Fix yang sama untuk Statistics Chart
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+// PENTING: Gunakan format import yang mengambil default export secara eksplisit
+const ReactApexChart = dynamic(() => import("react-apexcharts").then((mod) => mod.default), {
   ssr: false,
 });
 

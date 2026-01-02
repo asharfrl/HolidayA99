@@ -6,17 +6,8 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   
-  // Explicitly set an empty turbopack config to silence the error as per the log suggestion
-  experimental: {
-     turbo: {
-        rules: {
-           '*.svg': {
-              loaders: ['@svgr/webpack'],
-              as: '*.js',
-           },
-        }
-     }
-  },
+
+  turbopack: {},
 
   webpack(config) {
     config.module.rules.push({

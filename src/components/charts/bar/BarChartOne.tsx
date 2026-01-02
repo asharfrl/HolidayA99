@@ -1,16 +1,16 @@
 "use client";
-import React, { useState } from "react";
-import { ApexOptions } from "apexcharts";
+import React from "react";
 import dynamic from "next/dynamic";
+import { ApexOptions } from "apexcharts";
 
-// PENTING: Import ReactApexChart secara dinamis dengan ssr: false
-// Ini memperbaiki error "Element type is invalid" saat build
+// PENTING: Gunakan dynamic import dengan ssr: false
+// Ini mencegah kode dieksekusi di server saat build
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
 const BarChartOne: React.FC = () => {
-  const [series] = useState([
+  const series = [
     {
       name: "Sales",
       data: [44, 55, 41, 67, 22, 43, 65],
@@ -19,9 +19,9 @@ const BarChartOne: React.FC = () => {
       name: "Revenue",
       data: [13, 23, 20, 8, 13, 27, 15],
     },
-  ]);
+  ];
 
-  const [options] = useState<ApexOptions>({
+  const options: ApexOptions = {
     chart: {
       type: "bar",
       height: 350,
@@ -80,8 +80,8 @@ const BarChartOne: React.FC = () => {
     fill: {
       opacity: 1,
     },
-    colors: ["#3C50E0", "#80CAEE"], // Sesuaikan warna dengan tema Anda
-  });
+    colors: ["#3C50E0", "#80CAEE"],
+  };
 
   return (
     <div className="col-span-12 rounded-lg border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-6">
@@ -92,7 +92,6 @@ const BarChartOne: React.FC = () => {
           </h4>
         </div>
       </div>
-
       <div className="mb-2">
         <div id="barChartOne" className="-ml-5">
           <ReactApexChart

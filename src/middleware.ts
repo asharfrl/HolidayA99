@@ -2,37 +2,44 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  // 1. Ambil cookie 'auth_role'
+  // 1. Ambil cookie 'auth_role' yang kita set di SignInForm.tsx
   const authRole = request.cookies.get('auth_role')?.value;
   
-  // 2. Tentukan halaman yang boleh diakses tanpa login
-  // Kita tambahkan /signin dan folder public images agar tidak blank
   const { pathname } = request.nextUrl;
 
-  // Jika user sudah login (punya cookie) dan mencoba akses halaman signin
-  if (authRole && pathname === '/signin') {
+  // Daftar path yang public (tidak perlu login)
+  const publicPaths = ['/signin', '/signup', '/forgot-password'];
+  
+  // Cek apakah path saat ini adalah public
+  const isPublicPath = publicPaths.some(path => pathname.startsWith(path));
+
+  // KASUS 1: User SUDAH login tapi buka halaman public (signin/signup)
+  // Redirect ke dashboard
+  if (authRole && isPublicPath) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  // Jika user BELUM login dan mencoba akses halaman selain signin
-  if (!authRole && pathname !== '/signin') {
+  // KASUS 2: User BELUM login tapi buka halaman private (selain public)
+  // Redirect ke signin
+  if (!authRole && !isPublicPath) {
     return NextResponse.redirect(new URL('/signin', request.url));
   }
 
+  // Lanjutkan request
   return NextResponse.next();
 }
 
-// Konfigurasi agar middleware tidak memblokir file statis (gambar, css, js)
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
+     * Match all request paths except for:
      * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - images (folder gambar public)
      * - favicon.ico (favicon file)
+     * - public files (svg, png, jpg, etc)
      */
-    '/((?!api|_next/static|_next/image|images|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|images|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };

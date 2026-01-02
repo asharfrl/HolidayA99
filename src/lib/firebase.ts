@@ -2,30 +2,34 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Menggunakan Environment Variables (JANGAN HARDCODE DI SINI)
 const firebaseConfig = {
-  apiKey: "AIzaSyBG-G_cth5sGHPKMVzo9Ef81uZq5xxCtzU",
-  authDomain: "holiday-a99.firebaseapp.com",
-  projectId: "holiday-a99",
-  storageBucket: "holiday-a99.firebasestorage.app",
-  messagingSenderId: "630879654044",
-  appId: "1:630879654044:web:aeaa0918b95fb55eb15d59",
-  measurementId: "G-JEMDJJV5NJ"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Singleton Pattern: Mencegah inisialisasi ulang saat hot-reload di Next.js
+// Singleton Pattern: Mencegah inisialisasi ulang saat hot-reload
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-// Initialize Analytics (Client-side only)
+// Initialize Analytics (Hanya di Client-side dan jika didukung)
 let analytics;
 if (typeof window !== "undefined") {
-  analytics = getAnalytics(app);
+  isSupported().then((supported) => {
+    if (supported) {
+      analytics = getAnalytics(app);
+    }
+  });
 }
+
 export { analytics };

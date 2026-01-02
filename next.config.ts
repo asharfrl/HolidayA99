@@ -1,15 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Biarkan TypeScript ignore agar build tidak gagal karena error tipe
+  // We keep this to prevent TypeScript errors from failing the build
   typescript: {
     ignoreBuildErrors: true,
   },
   
-  // HAPUS blok 'experimental' dan 'turbopack' sepenuhnya.
-  // Next.js 16 sudah cukup pintar menangani defaultnya, dan konfigurasi manual seringkali malah bikin konflik.
-  
-  // Konfigurasi Webpack untuk SVG (Wajib ada karena Anda pakai SVGR)
+
+  turbopack: {},
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
